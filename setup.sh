@@ -38,18 +38,22 @@ installRequirements(){
     echo "Installing $NODENAME Compute Node"
     ARCH=$(uname -m)
 
-    if [ "$ARCH" == "arm64" ] || [ "$ARCH" == "aarch64" ]; then
-        echo "Architecture is arm64, downloading arm64 version."
-        curl -L -o $NODENAME-cli.tar.gz https://github.com/block-mesh/block-mesh-monorepo/releases/download/v0.0.352/blockmesh-cli-aarch64-unknown-linux-gnu.tar.gz
+    case "$ARCH" in
+    arm64|aarch64)
+        echo "Architecture is arm64/aarch64, downloading arm64 version."
+        curl -L -o "$NODENAME-cli.tar.gz" "https://github.com/block-mesh/block-mesh-monorepo/releases/download/v0.0.352/blockmesh-cli-aarch64-unknown-linux-gnu.tar.gz"
         NODEPATH="$HOME/node/$NODENAME/target/aarch64-unknown-linux-gnu/release"
-    elif [ "$ARCH" == "x86_64" ]; then
+        ;;
+    x86_64)
         echo "Architecture is x86_64, downloading amd64 version."
-        curl -L -o $NODENAME-cli.tar.gz https://github.com/block-mesh/block-mesh-monorepo/releases/download/v0.0.352/blockmesh-cli-x86_64-unknown-linux-gnu.tar.gz
+        curl -L -o "$NODENAME-cli.tar.gz" "https://github.com/block-mesh/block-mesh-monorepo/releases/download/v0.0.352/blockmesh-cli-x86_64-unknown-linux-gnu.tar.gz"
         NODEPATH="$HOME/node/$NODENAME/target/x86_64-unknown-linux-gnu/release"
-    else
+        ;;
+    *)
         echo "Unknown architecture: $ARCH. Exiting."
         exit 1
-    fi
+        ;;
+esac
     
     echo "Extracting $NODENAME-cli.tar.gz..."
     if tar -xvzf "$NODENAME-cli.tar.gz"; then
