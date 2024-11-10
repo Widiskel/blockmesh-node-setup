@@ -38,7 +38,7 @@ installRequirements(){
     echo "Installing $NODENAME Compute Node"
     ARCH=$(uname -m)
 
-    if [ "$ARCH" == "arm64" ]; then
+    if [ "$ARCH" == "arm64" ] || [ "$ARCH" == "aarch64" ]; then
         echo "Architecture is arm64, downloading arm64 version."
         curl -L -o $NODENAME-cli.tar.gz https://github.com/block-mesh/block-mesh-monorepo/releases/download/v0.0.352/blockmesh-cli-aarch64-unknown-linux-gnu.tar.gz
         NODEPATH="$HOME/node/$NODENAME/target/aarch64-unknown-linux-gnu/release"
